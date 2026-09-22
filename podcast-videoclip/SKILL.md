@@ -8,7 +8,7 @@ description: >
 
 Four-phase workflow: plan clips from transcript → verify timestamps → batch render → subtitle.
 
-**Phase 0 — PLAN**: Analyze transcript → suggest highlights → verify timestamps in clip_planner.html
+**Phase 0 — PLAN**: Analyze transcript → suggest highlights → verify timestamps in clip-planner.html
 **Phase 1 — CUT**: For each clip, extract + enhance + speed → `clip_clean.mp4` (multi-agent, parallel)
 **Phase 2 — SUBTITLE**: Transcribe, align, burn subtitles → final Instagram MP4
 
@@ -16,8 +16,8 @@ Four-phase workflow: plan clips from transcript → verify timestamps → batch 
 
 ## Tools
 
-- **`clip_planner.html`** (`/Users/jrui7/Downloads/podcast/clip_planner.html`) — transcript analysis, clip selection, timestamp verification, audio alignment. Exports `clip_plan.json`.
-- **`clip_editor.html`** (`/Users/jrui7/Downloads/podcast/clip_editor.html`) — per-clip segment fine-tuning, subtitle alignment, preview. Used in Phase 2.
+- **`clip-planner.html`** (`/Users/ppvfx/Documents/IA/podcast-workflow/tools/clip-planner.html`) — transcript analysis, clip selection, timestamp verification, audio alignment. Exports `clip_plan.json`.
+- **`clip-editor.html`** (`/Users/ppvfx/Documents/IA/podcast-workflow/tools/clip-editor.html`) — per-clip segment fine-tuning, subtitle alignment, preview. Used in Phase 2.
 - **`render_clean.py`** — renders the clean clip from `clip_decisions.json` (concatenate keeps + speed + intro/outro).
 - **moviepy + PIL subtitle burn** — burns subtitles onto clean clip. Produces EN and/or ZH versions.
 
@@ -78,9 +78,9 @@ Output a markdown table for the user + save `clip_suggestions.json`:
 }
 ```
 
-### 0.2 Verify & manage clips (clip_planner.html — control config)
+### 0.2 Verify & manage clips (clip-planner.html — control config)
 
-Open `clip_planner.html` in a browser:
+Open `clip-planner.html` in a browser:
 1. Drop in video + (optional audio) + `clip_suggestions.json`
 2. If separate audio: adjust **audio offset slider** until speech syncs with lips
 3. For each clip row, play to the desired start → click **[IN]** → V.Start fills, Audio Start auto-computes
@@ -93,7 +93,7 @@ Open `clip_planner.html` in a browser:
 
 Keyboard: `I` = set in, `O` = set out, `Space` = play/pause, `↑↓` = select, `←→` = seek
 
-**clip_planner.html is the control config** — one file that tracks all clips through every pipeline phase. Re-import it anytime to see current state.
+**clip-planner.html is the control config** — one file that tracks all clips through every pipeline phase. Re-import it anytime to see current state.
 
 ### 0.3 Export format (`clip_plan.json`)
 
@@ -143,7 +143,7 @@ Do NOT transcribe or add subtitles — stop after merging.
 ```
 
 After all agents complete, report the list of ready clips. The user then:
-- Opens each in `clip_editor.html` for segment fine-tuning (if needed) or subtitle work
+- Opens each in `clip-editor.html` for segment fine-tuning (if needed) or subtitle work
 - Or triggers Phase 2 per clip
 
 ### 1.1 Prepare source (optional: enhance + separate audio)
@@ -175,9 +175,9 @@ If video already has good audio, skip this — use the video file directly as so
 - `hqdn3d=4:3:6:4.5` — temporal + spatial denoising
 - `unsharp=5:5:0.8:3:3:0.0` — luma sharpening
 
-### 1.2 Select segments in clip_editor.html
+### 1.2 Select segments in clip-editor.html
 
-Open `clip_editor.html` in a browser:
+Open `clip-editor.html` in a browser:
 1. Drop in the source video (+ optional audio, SRT, decisions)
 2. Click "Open Editor"
 3. Use **Mark In** (`I` key) and **Mark Out** (`O` key) to select segments
@@ -288,9 +288,9 @@ with open("clip_clean_zh.srt", "w", encoding="utf-8") as f:
     f.write("\n".join(srt))
 ```
 
-### 2.3 Align subtitles in clip_editor.html
+### 2.3 Align subtitles in clip-editor.html
 
-Open `clip_editor.html` again:
+Open `clip-editor.html` again:
 1. Drop in `clip_clean.mp4` (video only — no separate audio needed)
 2. Optionally drop in `clip_clean_en.srt` and/or `clip_clean_zh.srt`
 3. Or drop in a decisions JSON that already has subtitles
@@ -397,26 +397,26 @@ transcript.srt
     │
     ├─ [Phase 0.1] /podcast-videoclip in terminal → clip_suggestions.json
     │
-    ├─ [Phase 0.2] clip_planner.html (video + audio + suggestions)
+    ├─ [Phase 0.2] clip-planner.html (video + audio + suggestions)
     │              → verify timestamps, set titles → clip_plan.json
     │
 source_video.mp4 + clip_plan.json
     │
     ├─ [Phase 1] multi-agent per clip → podcast_output/<title>/clip_source.mp4
     │
-    ├─ [Phase 1.2-1.3] clip_editor.html per clip → clip_decisions.json → render_clean.py → clip_clean.mp4
+    ├─ [Phase 1.2-1.3] clip-editor.html per clip → clip_decisions.json → render_clean.py → clip_clean.mp4
     │
     ├─ [Phase 2.1] Whisper → clip_clean_en.srt
     │
     ├─ [Phase 2.2] Claude → clip_clean_zh.srt
     │
-    ├─ [Phase 2.3] clip_editor.html → clip_decisions.json (+ subtitles)
+    ├─ [Phase 2.3] clip-editor.html → clip_decisions.json (+ subtitles)
     │
     ├─ [Phase 2.4] Bake subtitles:  intro (title card) → main clip (EN or EN+ZH) → outro (cover)
     │              → clip_instagram_final.mp4 (EN)
     │              → clip_instagram_final_zh.mp4 (ZH+EN)
     │
-    └─ [Control] clip_planner.html tracks all clips through all phases
+    └─ [Control] clip-planner.html tracks all clips through all phases
                  Upload clip_decisions.json per clip → export full clip_plan.json
 ```
 
@@ -424,7 +424,7 @@ source_video.mp4 + clip_plan.json
 
 ## Pitfalls
 
-1. **Separate audio alignment**: When video and audio come from different recordings, the user provides both timestamps. Fine-tune with the audio offset slider in clip_editor.html.
+1. **Separate audio alignment**: When video and audio come from different recordings, the user provides both timestamps. Fine-tune with the audio offset slider in clip-editor.html.
 2. **Subtitle offset is baked on export**: The editor bakes `subtitle_offset_seconds` into the timestamps when exporting. Imported decisions always have offset=0 and absolute times.
 3. **Re-transcribe after cutting**: Don't try to remap original SRT timestamps to the cut timeline. Transcribe `clip_clean.mp4` directly — Whisper produces perfectly aligned timestamps.
 4. **moviepy instead of ffmpeg drawtext**: This ffmpeg build (Homebrew) lacks `drawtext`/`libass`. The moviepy + PIL approach works universally.
