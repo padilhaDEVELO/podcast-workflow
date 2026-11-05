@@ -1,5 +1,7 @@
 # podcast-workflow
 
+> Este repositório é um fork de [`RJSSUE/podcast-workflow`](https://github.com/RJSSUE/podcast-workflow). A autoria original e a licença MIT permanecem com o projeto upstream. Este fork tem um commit próprio de ajustes de workflow; as diferenças podem ser consultadas no [comparativo com o upstream](https://github.com/RJSSUE/podcast-workflow/compare/main...padilhaDEVELO:podcast-workflow:main).
+
 A complete podcast post-production toolkit for [Claude Code](https://claude.ai/claude-code). Turn raw audio recordings into polished episodes with transcripts, show notes, articles, social media copy, and highlight clips — all driven by AI-powered Claude Code skills.
 
 ## Quick Install
